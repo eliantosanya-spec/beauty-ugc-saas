@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% set title = "店舗設定" %}
+{% set active_nav = "settings" %}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  {% if saved %}
+  <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm alert-dismiss">保存しました。</div>
+  {% endif %}
+  <div class="bg-white rounded-xl border border-gray-200 p-5">
+    <form method="post" action="/settings" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">店舗名</label>
+        <input name="name" value="{{ store.name }}" required
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">業種</label>
+        <select name="business_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+          {% for key, label in business_options %}
+          <option value="{{ key }}" {{ 'selected' if store.business_type == key }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">地域</label>
+        <input name="area" value="{{ store.area }}" placeholder="渋谷"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Instagramアカウント</label>
+        <input name="instagram_account" value="{{ store.instagram_account }}" placeholder="shop_account"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">予約URL</label>
+        <input name="booking_url" value="{{ store.booking_url }}" placeholder="https://..."
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">投稿トーン</label>
+        <select name="post_tone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+          {% for tone in tone_options %}
+          <option {{ 'selected' if store.post_tone == tone }}>{{ tone }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="md:col-span-2 border-t border-gray-100 pt-4">
+        <p class="text-sm font-medium text-gray-700 mb-3">クーポン・キャンペーン</p>
+        <label class="flex items-center gap-3 mb-3">
+          <input type="checkbox" name="coupon_enabled" value="true" {{ 'checked' if store.coupon_enabled }}
+                 class="w-5 h-5 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+          <span class="text-sm text-gray-600">次回割引クーポンを表示</span>
+        </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ml-8">
+          <input name="coupon_code" value="{{ store.coupon_code }}" placeholder="PHOTO500"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+          <input name="coupon_description" value="{{ store.coupon_description }}" placeholder="次回来店時に500円OFF"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+        </div>
+        <label class="flex items-center gap-3 mt-4 mb-3">
+          <input type="checkbox" name="lottery_enabled" value="true" {{ 'checked' if store.lottery_enabled }}
+                 class="w-5 h-5 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+          <span class="text-sm text-gray-600">抽選キャンペーンを表示</span>
+        </label>
+        <div class="ml-8">
+          <input name="lottery_description" value="{{ store.lottery_description }}" placeholder="今月の抽選キャンペーンに参加"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+        </div>
+      </div>
+      <div class="md:col-span-2 mt-2">
+        <button type="submit" class="w-full bg-brand-600 text-white font-medium py-3 rounded-lg hover:bg-brand-700 transition active:scale-[0.98]">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

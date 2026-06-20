@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.secret_key
+data/app.sqlite3
+data/uploads/*
+!data/uploads/.gitkeep
+.env

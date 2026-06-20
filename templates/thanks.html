@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% set title = "送信完了" %}
+{% block content %}
+<div class="max-w-sm mx-auto mt-8 text-center">
+  <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-4">
+    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+    </div>
+    <h2 class="text-xl font-bold text-gray-800">写真を送信しました</h2>
+    <p class="text-gray-500">店舗スタッフが確認します。</p>
+    {% if store.coupon_enabled or store.lottery_enabled %}
+    <div class="bg-brand-50 rounded-lg p-4 text-left space-y-2">
+      {% if store.coupon_enabled %}
+      <div class="flex items-center gap-2 text-sm">
+        <span class="font-bold text-brand-600">{{ store.coupon_code }}</span>
+        <span class="text-gray-600">{{ store.coupon_description }}</span>
+      </div>
+      {% endif %}
+      {% if store.lottery_enabled %}
+      <p class="text-sm text-gray-600">{{ store.lottery_description }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

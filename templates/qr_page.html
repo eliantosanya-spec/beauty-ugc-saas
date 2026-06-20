@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% set title = "アップロードURL" %}
+{% set active_nav = "qr" %}
+{% block content %}
+<div class="max-w-md mx-auto">
+  <div class="bg-white rounded-xl border border-gray-200 p-6 text-center space-y-4">
+    <p class="text-xs text-gray-500 uppercase tracking-wide">お客様にこのQRコードを案内してください</p>
+    <p class="font-bold text-lg">{{ store.name }}</p>
+    <div class="flex justify-center">
+      <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 inline-block">
+        <img src="/qr.svg" alt="QRコード" class="w-48 h-48">
+      </div>
+    </div>
+    <p class="text-sm text-gray-600">スマホで読み取ると写真送信フォームが開きます。</p>
+    <p class="text-xs text-gray-400">受付、施術席、レジ横に印刷して置いてください。</p>
+    <div class="bg-gray-50 rounded-lg px-4 py-3 text-sm text-gray-600 break-all select-all">{{ upload_url }}</div>
+    <div class="flex gap-3">
+      <button data-copy="{{ upload_url }}" class="flex-1 bg-gray-100 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-200 transition touch-target justify-center">URLをコピー</button>
+      <button onclick="window.print()" class="flex-1 bg-gray-100 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-200 transition touch-target justify-center">印刷する</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

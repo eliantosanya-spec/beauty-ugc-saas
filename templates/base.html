@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ title }} — Beauty UGC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#fdf2f8', 100: '#fce7f3', 500: '#ec4899', 600: '#db2777', 700: '#be185d' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    body { overscroll-behavior: none; }
+    .touch-target { min-height: 44px; min-width: 44px; display: flex; align-items: center; }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 8px); }
+    input, select, textarea, button { font-size: 16px; } /* prevent iOS zoom */
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased pb-20 safe-bottom min-h-screen">
+
+  {% if authed %}
+  <!-- Top Header -->
+  <header class="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2 min-w-0">
+      <span class="text-brand-600 font-bold text-lg truncate">{{ store.name }}</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <a href="/settings" class="touch-target px-2 text-gray-500 hover:text-brand-600 transition" aria-label="設定">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+      </a>
+      <a href="/logout" class="touch-target px-2 text-gray-400 hover:text-red-500 transition" aria-label="ログアウト">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+      </a>
+    </div>
+  </header>
+  {% endif %}
+
+  <!-- Page Title -->
+  <div class="px-4 pt-4 pb-2">
+    <h1 class="text-xl font-bold text-gray-800">{{ title }}</h1>
+  </div>
+
+  <!-- Main Content -->
+  <main class="px-4 space-y-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if authed %}
+  <!-- Bottom Nav (mobile-first) -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 safe-bottom">
+    <div class="flex items-center justify-around h-14">
+      <a href="/dashboard" class="flex flex-col items-center gap-0.5 touch-target px-3 {{ 'text-brand-600' if active_nav == 'dashboard' else 'text-gray-400' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+        <span class="text-[10px] leading-tight">投稿</span>
+      </a>
+      <a href="/qr" class="flex flex-col items-center gap-0.5 touch-target px-3 {{ 'text-brand-600' if active_nav == 'qr' else 'text-gray-400' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h2v1H5zm-2 7a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zm2 2v-1h2v1H5zm7-11a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1h-4zm1 5V5h2v1h-2zm1 3a1 1 0 100 2 1 1 0 000-2zm-2 6a2 2 0 114 0 2 2 0 01-4 0zm2-8a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/></svg>
+        <span class="text-[10px] leading-tight">URL</span>
+      </a>
+      <a href="/backup" class="flex flex-col items-center gap-0.5 touch-target px-3 {{ 'text-brand-600' if active_nav == 'backup' else 'text-gray-400' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+        <span class="text-[10px] leading-tight">保存</span>
+      </a>
+      <a href="/settings" class="flex flex-col items-center gap-0.5 touch-target px-3 {{ 'text-brand-600' if active_nav == 'settings' else 'text-gray-400' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        <span class="text-[10px] leading-tight">設定</span>
+      </a>
+    </div>
+  </nav>
+  {% endif %}
+
+  <!-- Toast notifications -->
+  <div id="toast" class="fixed top-4 right-4 z-50 hidden"></div>
+
+  <script>
+    // Copy-to-clipboard helper
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+          const orig = btn.textContent;
+          btn.textContent = 'コピーしました';
+          setTimeout(() => btn.textContent = orig, 1500);
+        });
+      });
+    });
+    document.querySelectorAll('[data-copy-target]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const el = document.getElementById(btn.dataset.copyTarget);
+        if (!el) return;
+        navigator.clipboard.writeText(el.value || el.textContent).then(() => {
+          const orig = btn.textContent;
+          btn.textContent = 'コピーしました';
+          setTimeout(() => btn.textContent = orig, 1500);
+        });
+      });
+    });
+    // Auto-dismiss alerts
+    document.querySelectorAll('.alert-dismiss').forEach(el => {
+      setTimeout(() => { el.remove(); }, 4000);
+    });
+  </script>
+</body>
+</html>

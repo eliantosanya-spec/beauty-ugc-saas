@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% set title = store.name ~ " 写真送信" %}
+{% block content %}
+<div class="max-w-lg mx-auto">
+  <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4 text-center">
+    <div class="w-14 h-14 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-brand-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+    </div>
+    <p class="text-xs text-gray-500">写真提供フォーム</p>
+    <p class="font-bold text-lg">{{ store.name }}</p>
+    <p class="text-sm text-gray-600 mt-2">仕上がり写真を送ると、店舗SNSで紹介される場合があります。</p>
+  </div>
+  <div class="bg-white rounded-xl border border-gray-200 p-5">
+    {% if error %}
+    <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm mb-4">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/u/{{ store.public_upload_id }}" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">写真</label>
+        <input name="photo" type="file" accept="image/*" required
+               class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">メニュー名 <span class="text-gray-400 font-normal">任意</span></label>
+        <input name="menu_name" placeholder="例: 透明感カラー、ワンカラーネイル"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Instagram ID <span class="text-gray-400 font-normal">任意</span></label>
+        <input name="instagram_id" placeholder="例: customer_id"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+      </div>
+      <fieldset>
+        <legend class="block text-sm font-medium text-gray-700 mb-2">感想を選択 <span class="text-gray-400 font-normal">任意</span></legend>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {% for comment in comments %}
+          <label class="flex items-start gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer">
+            <input type="checkbox" name="selected_comments" value="{{ comment }}" class="mt-0.5 w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+            <span class="text-sm text-gray-700">{{ comment }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">自由コメント <span class="text-gray-400 font-normal">任意</span></label>
+        <textarea name="free_comment" rows="3" placeholder="相談しやすかった、仕上がりが気に入った等"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none resize-none"></textarea>
+      </div>
+      <label class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
+        <input type="checkbox" name="consent" value="true" required class="mt-0.5 w-5 h-5 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+        <span class="text-sm text-gray-600">店舗SNSや販促物で写真を使用することに同意します</span>
+      </label>
+      <button type="submit" class="w-full bg-brand-600 text-white font-medium py-3 rounded-lg hover:bg-brand-700 transition active:scale-[0.98]">送信する</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
